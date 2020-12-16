@@ -9,10 +9,14 @@ namespace FixIt.Data
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext() { }
-        public ApplicationDbContext(DbContextOptions options ) : base(options)
-        {
-            public virtual DbSet<RequestForm> RequestForms { get; set; }
-            public virtual DbSet<Service> Services { get; set; }
-        }
+        public ApplicationDbContext(DbContextOptions options) : base(options)
+        { }
+
+        public virtual DbSet<RequestForm> RequestForms { get; set; }
+        public virtual DbSet<Service> Services { get; set; }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder options)
+        //   => options.UseSqlite("Data Source=sample.db");
     }
 }
+

@@ -1,6 +1,8 @@
-﻿using FixIt.Data.Models;
+﻿using FixIt.Data;
+using FixIt.Data.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FixIt.Services
@@ -8,24 +10,37 @@ namespace FixIt.Services
     public class RequestFormService : IRequestFormService
     {
         private readonly ApplicationDbContext _db;
+
+        public RequestFormService(ApplicationDbContext db)
+        {
+            _db = db;
+        }
+
         public void AddRequest(RequestForm requestForm)
         {
-            throw new NotImplementedException();
+            _db.RequestForms.Add(requestForm);
+            _db.SaveChanges();
         }
 
-        public void DeleteRequest(int requestId)
+        public void DeactivateRequest(RequestForm requestForm)
         {
-            throw new NotImplementedException();
+            // it my changed 'deactivated' not delete
+            var formToDeactivate = _db.RequestForms.Find(requestForm.Id);
+            if (formToDeactivate != null)
+            {
+                _db.Update(formToDeactivate);
+                _db.SaveChanges();
+            }
         }
 
-        public List<RequestForm> GetAllRequests()
+        public List<RequestForm> GetAllForms()
         {
-            throw new NotImplementedException();
+            return _db.RequestForms.ToList();
         }
 
-        public RequestForm GetRequest(int requestId)
+        public RequestForm GetFormById(int formId)
         {
-            throw new NotImplementedException();
+            return _db.RequestForms.Find(formId);
         }
     }
 }

@@ -6,9 +6,9 @@ namespace FixIt.Services
 {
     public interface IRequestFormService
     {
-        public List<RequestForm> GetAllRequests();
-        public RequestForm GetRequest(int requestId);
+        public List<RequestForm> GetAllForms();
+        public RequestForm GetFormById(int requestId);
         public void AddRequest(RequestForm requestForm);
-        public void DeleteRequest(int requestId);
+        public void DeactivateRequest(RequestForm requestForm);
     }
 }
