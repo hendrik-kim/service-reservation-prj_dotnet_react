@@ -7,25 +7,25 @@ using System.Text;
 
 namespace FixIt.Services
 {
-    public class RequestFormService : IRequestFormService
+    public class JobDataService : IJobDataService
     {
         private readonly ApplicationDbContext _db;
 
-        public RequestFormService(ApplicationDbContext db)
+        public JobDataService(ApplicationDbContext db)
         {
             _db = db;
         }
 
-        public void AddRequest(RequestForm requestForm)
+        public void AddJobData(JobData requestForm)
         {
-            _db.RequestForms.Add(requestForm);
+            _db.JobData.Add(requestForm);
             _db.SaveChanges();
         }
 
-        public void DeactivateRequest(RequestForm requestForm)
+        public void DeactivateJobData(JobData jobData)
         {
             // it my changed 'deactivated' not delete
-            var formToDeactivate = _db.RequestForms.Find(requestForm.Id);
+            var formToDeactivate = _db.JobData.Find(jobData.JobId);
             if (formToDeactivate != null)
             {
                 _db.Update(formToDeactivate);
@@ -33,14 +33,14 @@ namespace FixIt.Services
             }
         }
 
-        public List<RequestForm> GetAllForms()
+        public List<JobData> GetAllJobs()
         {
-            return _db.RequestForms.ToList();
+            return _db.JobData.ToList();
         }
 
-        public RequestForm GetFormById(int formId)
+        public JobData GetJobById(int formId)
         {
-            return _db.RequestForms.Find(formId);
+            return _db.JobData.Find(formId);
         }
     }
 }

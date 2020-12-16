@@ -33,7 +33,7 @@ namespace FixIt.Web
             {
                 option.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                    policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
                 });
             });
             services.AddControllers();
@@ -44,7 +44,8 @@ namespace FixIt.Web
             });
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IRequestFormService, RequestFormService>();
+            services.AddScoped<IJobDataService, JobDataService>();
+            services.AddScoped<IServiceCategoryService, ServiceCategoryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

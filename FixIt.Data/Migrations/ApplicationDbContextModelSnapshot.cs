@@ -36,9 +36,9 @@ namespace FixIt.Data.Migrations
                     b.ToTable("ApplicationUser");
                 });
 
-            modelBuilder.Entity("FixIt.Data.Models.RequestForm", b =>
+            modelBuilder.Entity("FixIt.Data.Models.JobData", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("JobId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -63,16 +63,31 @@ namespace FixIt.Data.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("JobId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RequestForms");
+                    b.ToTable("JobData");
                 });
 
-            modelBuilder.Entity("FixIt.Data.Models.Service", b =>
+            modelBuilder.Entity("FixIt.Data.Models.JobService", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("JobDataId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("JobDataId", "ServiceId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("FormServices");
+                });
+
+            modelBuilder.Entity("FixIt.Data.Models.ServiceCategory", b =>
+                {
+                    b.Property<int>("ServiceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -88,28 +103,31 @@ namespace FixIt.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("RequestFormId")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("ServiceId");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("RequestFormId");
-
-                    b.ToTable("Services");
+                    b.ToTable("ServiceCategories");
                 });
 
-            modelBuilder.Entity("FixIt.Data.Models.RequestForm", b =>
+            modelBuilder.Entity("FixIt.Data.Models.JobData", b =>
                 {
                     b.HasOne("FixIt.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("FixIt.Data.Models.Service", b =>
+            modelBuilder.Entity("FixIt.Data.Models.JobService", b =>
                 {
-                    b.HasOne("FixIt.Data.Models.RequestForm", null)
-                        .WithMany("Services")
-                        .HasForeignKey("RequestFormId");
+                    b.HasOne("FixIt.Data.Models.JobData", "JobData")
+                        .WithMany("JobServices")
+                        .HasForeignKey("JobDataId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FixIt.Data.Models.ServiceCategory", "Service")
+                        .WithMany("JobService")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

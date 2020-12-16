@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FixIt.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,10 +23,26 @@ namespace FixIt.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RequestForms",
+                name: "ServiceCategories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    ServiceId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    InitHourRate = table.Column<decimal>(nullable: false),
+                    AddHourRate = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServiceCategories", x => x.ServiceId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "JobData",
+                columns: table => new
+                {
+                    JobId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ImageUrl = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
@@ -38,9 +54,9 @@ namespace FixIt.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RequestForms", x => x.Id);
+                    table.PrimaryKey("PK_JobData", x => x.JobId);
                     table.ForeignKey(
-                        name: "FK_RequestForms_ApplicationUser_UserId",
+                        name: "FK_JobData_ApplicationUser_UserId",
                         column: x => x.UserId,
                         principalTable: "ApplicationUser",
                         principalColumn: "Id",
@@ -48,46 +64,50 @@ namespace FixIt.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Services",
+                name: "FormServices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    InitHourRate = table.Column<decimal>(nullable: false),
-                    AddHourRate = table.Column<decimal>(nullable: false),
-                    RequestFormId = table.Column<int>(nullable: true)
+                    JobDataId = table.Column<int>(nullable: false),
+                    ServiceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Services", x => x.Id);
+                    table.PrimaryKey("PK_FormServices", x => new { x.JobDataId, x.ServiceId });
                     table.ForeignKey(
-                        name: "FK_Services_RequestForms_RequestFormId",
-                        column: x => x.RequestFormId,
-                        principalTable: "RequestForms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_FormServices_JobData_JobDataId",
+                        column: x => x.JobDataId,
+                        principalTable: "JobData",
+                        principalColumn: "JobId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FormServices_ServiceCategories_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "ServiceCategories",
+                        principalColumn: "ServiceId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RequestForms_UserId",
-                table: "RequestForms",
-                column: "UserId");
+                name: "IX_FormServices_ServiceId",
+                table: "FormServices",
+                column: "ServiceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Services_RequestFormId",
-                table: "Services",
-                column: "RequestFormId");
+                name: "IX_JobData_UserId",
+                table: "JobData",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Services");
+                name: "FormServices");
 
             migrationBuilder.DropTable(
-                name: "RequestForms");
+                name: "JobData");
+
+            migrationBuilder.DropTable(
+                name: "ServiceCategories");
 
             migrationBuilder.DropTable(
                 name: "ApplicationUser");

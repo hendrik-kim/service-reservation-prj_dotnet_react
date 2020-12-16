@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FixIt.Web.ViewModels
 {
-    public class NewFormRequest
+    public class NewJobData
     {
         public int Id { get; set; }
         //public string ImageUrl { get; set; }
