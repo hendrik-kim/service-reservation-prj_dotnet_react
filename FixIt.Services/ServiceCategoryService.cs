@@ -16,14 +16,20 @@ namespace FixIt.Services
             _db = db;
         }
 
+        public void AddJobData(ServiceCategory requestForm)
+        {
+            _db.Services.Add(requestForm);
+            _db.SaveChanges();
+        }
+
         public List<ServiceCategory> GetAllServices()
         {
-            return _db.ServiceCategories.ToList();
+            return _db.Services.ToList();
         }
 
         public ServiceCategory GetServiceById(int serviceId)
         {
-            return _db.ServiceCategories.Find(serviceId);
+            return _db.Services.Find(serviceId);
         }
     }
 }

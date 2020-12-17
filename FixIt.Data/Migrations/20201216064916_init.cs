@@ -23,7 +23,7 @@ namespace FixIt.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ServiceCategories",
+                name: "Services",
                 columns: table => new
                 {
                     ServiceId = table.Column<int>(nullable: false)
@@ -35,7 +35,7 @@ namespace FixIt.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ServiceCategories", x => x.ServiceId);
+                    table.PrimaryKey("PK_Services", x => x.ServiceId);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,50 +64,50 @@ namespace FixIt.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FormServices",
+                name: "JobService",
                 columns: table => new
                 {
-                    JobDataId = table.Column<int>(nullable: false),
+                    JobId = table.Column<int>(nullable: false),
                     ServiceId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FormServices", x => new { x.JobDataId, x.ServiceId });
+                    table.PrimaryKey("PK_JobService", x => new { x.JobId, x.ServiceId });
                     table.ForeignKey(
-                        name: "FK_FormServices_JobData_JobDataId",
-                        column: x => x.JobDataId,
+                        name: "FK_JobService_JobData_JobId",
+                        column: x => x.JobId,
                         principalTable: "JobData",
                         principalColumn: "JobId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FormServices_ServiceCategories_ServiceId",
+                        name: "FK_JobService_Services_ServiceId",
                         column: x => x.ServiceId,
-                        principalTable: "ServiceCategories",
+                        principalTable: "Services",
                         principalColumn: "ServiceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FormServices_ServiceId",
-                table: "FormServices",
-                column: "ServiceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_JobData_UserId",
                 table: "JobData",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_JobService_ServiceId",
+                table: "JobService",
+                column: "ServiceId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FormServices");
+                name: "JobService");
 
             migrationBuilder.DropTable(
                 name: "JobData");
 
             migrationBuilder.DropTable(
-                name: "ServiceCategories");
+                name: "Services");
 
             migrationBuilder.DropTable(
                 name: "ApplicationUser");

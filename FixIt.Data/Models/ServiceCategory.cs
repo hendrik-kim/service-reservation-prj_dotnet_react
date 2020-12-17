@@ -14,6 +14,7 @@ namespace FixIt.Data.Models
         public decimal InitHourRate { get; set; }
         public decimal AddHourRate { get; set; }
 
-        public virtual IEnumerable<JobService> JobService { get; set; }
+        public virtual ICollection<JobService> JobServices { get; set; }
+
     }
 }

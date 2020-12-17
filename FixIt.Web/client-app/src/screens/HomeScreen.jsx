@@ -1,33 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import Service from './../components/Service';
-import services from './../service';
-import axios from 'axios';
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import { listServices } from './../actions/serviceActions';
 
 const HomeScreen = () => {
-  const [services, setServices] = useState([]);
+  const dispatch = useDispatch();
+
+  const serviceList = useSelector((state) => state.serviceList);
+  const { loading, error, services } = serviceList;
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const { data } = await axios.get('/api/jobs/');
-
-      console.log(data);
-      setServices(data);
-    };
-
-    fetchProducts();
-  }, []);
-
+    dispatch(listServices());
+  }, [dispatch]);
   return (
     <>
+      <br />
       <h1>Our services</h1>
-      <Row>
-        {services.map((service) => (
-          <Col sm={12} md={6} lg={4} xl={2}>
-            <Service service={service} />
-          </Col>
-        ))}
-      </Row>
+      <br />
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <Row>
+          {services.map((service) => (
+            <Col sm={12} md={6} lg={4} xl={2}>
+              <Service service={service} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </>
   );
 };

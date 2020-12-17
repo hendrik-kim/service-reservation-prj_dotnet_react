@@ -72,17 +72,17 @@ namespace FixIt.Data.Migrations
 
             modelBuilder.Entity("FixIt.Data.Models.JobService", b =>
                 {
-                    b.Property<int>("JobDataId")
+                    b.Property<int>("JobId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("JobDataId", "ServiceId");
+                    b.HasKey("JobId", "ServiceId");
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("FormServices");
+                    b.ToTable("JobService");
                 });
 
             modelBuilder.Entity("FixIt.Data.Models.ServiceCategory", b =>
@@ -105,7 +105,7 @@ namespace FixIt.Data.Migrations
 
                     b.HasKey("ServiceId");
 
-                    b.ToTable("ServiceCategories");
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("FixIt.Data.Models.JobData", b =>
@@ -119,12 +119,12 @@ namespace FixIt.Data.Migrations
                 {
                     b.HasOne("FixIt.Data.Models.JobData", "JobData")
                         .WithMany("JobServices")
-                        .HasForeignKey("JobDataId")
+                        .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FixIt.Data.Models.ServiceCategory", "Service")
-                        .WithMany("JobService")
+                        .WithMany("JobServices")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

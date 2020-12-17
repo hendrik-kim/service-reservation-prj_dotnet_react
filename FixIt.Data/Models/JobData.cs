@@ -16,7 +16,8 @@ namespace FixIt.Data.Models
         public DateTime UpdatedOn { get; set; }
         public bool IsActivated { get; set; }
 
-        public virtual IEnumerable<JobService> JobServices { get; set; }
+        //public virtual IEnumerable<JobService> JobServices { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public virtual ICollection<JobService> JobServices { get; set; }
     }
 }
