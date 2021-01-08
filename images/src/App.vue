@@ -1,5 +1,10 @@
 <template>
-  <div><AppHeader /><router-view /></div>
+  <div>
+    <AppHeader />
+    <div class="ui container">
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script>
