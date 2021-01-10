@@ -12,7 +12,7 @@ const actions = {
   async uploadImages({ rootState }, images) {
     const { token } = rootState.auth;
 
-    await api.upload(images, token);
+    await api.uploadImages(images, token);
 
     router.push('/');
   },
